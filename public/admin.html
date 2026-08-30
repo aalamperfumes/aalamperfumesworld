@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Admin Panel | Aalam Perfumes</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Login Container -->
+    <div id="login-container" class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow border-0 p-4">
+                    <h3 class="fw-bold text-center mb-4"><i class="fas fa-lock me-2"></i>Seller Login</h3>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Username</label>
+                            <input type="text" id="adminUser" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Password</label>
+                            <input type="password" id="adminPass" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 fw-bold py-2">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Initially Hidden) -->
+    <div id="dashboard-container" class="d-none">
+        <nav class="navbar navbar-dark bg-dark px-4">
+            <span class="navbar-brand fw-bold"><i class="fas fa-user-shield me-2"></i>Aalam Admin</span>
+            <button class="btn btn-outline-light btn-sm" onclick="logoutAdmin()">Logout</button>
+        </nav>
+
+        <div class="container py-4">
+            <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active fw-bold" id="pills-products-tab" data-bs-toggle="pill" data-bs-target="#pills-products">Manage Products</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link fw-bold" id="pills-orders-tab" data-bs-toggle="pill" data-bs-target="#pills-orders" onclick="loadOrders()">Received Orders</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+                <!-- Tab 1: Products Management -->
+                <div class="tab-pane fade show active" id="pills-products">
+                    <div class="row g-4">
+                        <div class="col-md-5">
+                            <div class="card shadow-sm p-4 border-0">
+                                <h5 id="form-title" class="fw-bold mb-3">Add New Product</h5>
+                                <form id="productForm">
+                                    <input type="hidden" id="prodId">
+                                    <div class="mb-2">
+                                        <label class="form-label">Product Name</label>
+                                        <input type="text" id="prodTitle" class="form-control" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Category</label>
+                                        <select id="prodCategory" class="form-select" required>
+                                            <option value="Men">Men</option>
+                                            <option value="Women">Women</option>
+                                            <option value="Unisex">Unisex</option>
+                                            <option value="Combo">Combo</option>
+                                        </select>
+                                    </div>
+                                    <!-- Type (Attar / Spray) പുതിയതായി ചേർത്തത് -->
+                                    <div class="mb-2">
+                                        <label class="form-label">Type (Attar / Spray)</label>
+                                        <select id="prodSub" class="form-select" required>
+                                            <option value="Attar">Attar</option>
+                                            <option value="Spray">Spray</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Price (₹)</label>
+                                        <input type="number" id="prodPrice" class="form-control" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Available Sizes (Comma Separated)</label>
+                                        <input type="text" id="prodSizes" class="form-control" placeholder="30ml, 50ml, 100ml" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Image URL</label>
+                                        <input type="text" id="prodImage" class="form-control" placeholder="https://..." required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Description</label>
+                                        <textarea id="prodDesc" class="form-control" rows="2" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100 fw-bold">Save Product</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="card shadow-sm p-3 border-0">
+                                <h5 class="fw-bold mb-3">Product Inventory</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin-product-list">
+                                            <!-- Dynamic Product Rows -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Orders View -->
+                <div class="tab-pane fade" id="pills-orders">
+                    <div class="card shadow-sm p-4 border-0">
+                        <h5 class="fw-bold mb-3">Customer Orders & Payment Details</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer Info</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-list">
+                                    <!-- Dynamic Orders -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

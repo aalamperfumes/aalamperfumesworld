@@ -1,0 +1,126 @@
+[
+  {
+    "id": "1",
+    "title": "Royal Oud",
+    "category": "Men",
+    "price": 1499,
+    "sizes": [
+      "50ml",
+      "100ml"
+    ],
+    "description": "Rich and premium woody fragrance for men.",
+    "image": "https://via.placeholder.com/200"
+  },
+  {
+    "id": "2",
+    "title": "Rose Elixir",
+    "category": "Women",
+    "price": 1299,
+    "sizes": [
+      "30ml",
+      "50ml",
+      "100ml"
+    ],
+    "description": "Fresh floral fragrance for women.",
+    "image": "https://via.placeholder.com/200"
+  },
+  {
+    "id": "1786986406054",
+    "title": "Spry",
+    "category": "Men",
+    "price": 234,
+    "sizes": [
+      "45"
+    ],
+    "image": "shot",
+    "description": "s"
+  },
+  {
+    "id": "1786986475336",
+    "title": "sakheer",
+    "category": "Men",
+    "price": 3455667889,
+    "sizes": [
+      "45"
+    ],
+    "image": "shot",
+    "description": "r"
+  },
+  {
+    "id": "1786986672655",
+    "title": "Spry",
+    "category": "Men",
+    "price": 353,
+    "sizes": [
+      "353"
+    ],
+    "image": "35",
+    "description": "35"
+  },
+  {
+    "id": "1786987072561",
+    "name": "Spry",
+    "category": "Men",
+    "price": 456,
+    "sizes": [
+      "56"
+    ],
+    "image": "fgd",
+    "description": "df"
+  },
+  {
+    "id": "prod_1786987459547",
+    "name": "Spry",
+    "category": "Men",
+    "price": 45,
+    "sizes": [
+      "45"
+    ],
+    "image": "ds",
+    "description": "sg"
+  },
+  {
+    "id": "prod_1786987618790",
+    "name": "Spry",
+    "category": "Women",
+    "price": 78,
+    "sizes": [
+      "45"
+    ],
+    "image": "fgd",
+    "description": "jh"
+  },
+  {
+    "id": "prod_1786987820807",
+    "name": "etw",
+    "category": "Men",
+    "price": 3,
+    "sizes": [
+      "45"
+    ],
+    "image": "shot",
+    "description": "35"
+  },
+  {
+    "id": "prod_1787041251836",
+    "name": "irfan",
+    "category": "Men",
+    "price": 21,
+    "sizes": [
+      "45"
+    ],
+    "image": "sakheer",
+    "description": "abcd"
+  },
+  {
+    "id": "prod_1787060899424",
+    "name": "Aalam Fragrance W",
+    "category": "Unisex",
+    "price": 454,
+    "sizes": [
+      "50ml"
+    ],
+    "image": "https://www.google.com/search?sca_esv=df1cf69e39475cc9&sxsrf=APpeQntxBDXt2n1F3xv0_uGMKDftBaUJZw:1787060708256&udm=2&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8c4u0nXx4bEIpwm1lnNH832U_8HGA5CoQxEwPvRgW8Cjzcsp_mzAhBftctt5p4L-exFTMKUSMyidRXNrPVJRaeujfEZVScGd8VeiiE1oqAAN_BFMk2X-dBJa9z0mwrmuPE6kMMcKjkeeJwOcRrQPp7jTCoWOnO1paj0Mh7w1n8lPLQcBJuEfrgLIDbkhBX34KEBZW0Sw&q=men&sa=X&ved=2ahUKEwiQmdT1p6qWAxWWm-EIHXJSOG4QtKgLegQIDxAB&biw=1093&bih=506&dpr=1.25#sv=CAMSURoyKhBlLUg0aER2RUFJcTM2MlFNMg5INGhEdkVBSXEzNjJRTToOeUJrRDdzbmFwYUNtak0gBCoXCgFzEhBlLUg0aER2RUFJcTM2MlFNGAEwARgHIP6W5oQBSggQARgBIAEoAQ",
+    "description": "Good Fragrance"
+  }
+]

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart & Checkout | Aalam Perfumes</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase" href="index.html">
+                <i class="fas fa-spray-can me-2"></i>Aalam Perfumes
+            </a>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <a href="index.html" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-arrow-left me-1"></i> Home
+                </a>
+                <a href="cart.html" class="btn btn-outline-light position-relative btn-sm">
+                    <i class="fas fa-shopping-cart me-1"></i> Cart
+                    <span id="cartBadge" class="badge bg-danger rounded-pill ms-1">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-5 flex-grow-1">
+        <h2 class="fw-bold mb-4">Your Shopping Cart</h2>
+
+        <div class="row g-4">
+            <!-- Left Side: Order Items List -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold mb-3 border-bottom pb-2">Order Items</h5>
+                    <div id="cartItems">
+                        <!-- Loaded dynamically via js/cart.js -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Shipping Details & Total Summary -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 90px;">
+                    <h5 class="fw-bold mb-3">Shipping Details</h5>
+                    <form id="shippingForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Full Name *</label>
+                            <input type="text" id="customerName" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Contact Number *</label>
+                            <input type="tel" id="customerPhone" class="form-control" placeholder="10-digit mobile number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Place / City *</label>
+                            <input type="text" id="customerCity" class="form-control" placeholder="City or Town" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Full Address *</label>
+                            <input type="text" id="customerAddress" class="form-control" placeholder="House Name/No, Street" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Pincode *</label>
+                            <input type="text" id="customerPincode" class="form-control" placeholder="6-digit pincode" required>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3 fs-5 fw-bold">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount" class="text-dark">₹0</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 py-2 fw-bold">
+                            <i class="fas fa-check-circle me-2"></i>Place Order / WhatsApp
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">&copy; 2026 Aalam Perfumes World. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

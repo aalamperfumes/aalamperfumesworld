@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category | Aalam Perfumes</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-uppercase tracking-wide" href="index.html">
+                <i class="fas fa-spray-can me-2"></i>Aalam Perfumes
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto ms-lg-4">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="category.html?type=Men">Men</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="category.html?type=Women">Women</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="category.html?type=Unisex">Unisex</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="category.html?type=Combo">Combos</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="cart.html" class="btn btn-outline-light position-relative">
+                        <i class="fas fa-shopping-cart me-1"></i> Cart
+                        <span id="cartBadge" class="badge bg-danger rounded-pill ms-1">0</span>
+                    </a>
+                    <a href="admin.html" class="btn btn-sm btn-gold text-dark fw-bold">Admin Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Category Header Banner -->
+    <div class="bg-dark text-white text-center py-5 mb-4 position-relative" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://plus.unsplash.com/premium_photo-1676748933022-e1183e997436?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;">
+        <div class="container">
+            <h1 id="pageTitle" class="fw-bold display-4 text-capitalize">All Products</h1>
+            <p class="lead text-light mb-0">Discover your signature scent</p>
+        </div>
+    </div>
+
+    <!-- Main Products Container -->
+    <main class="container my-4 flex-grow-1">
+        <div id="productGrid" class="row g-4">
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-dark" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 text-muted">Loading products...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-auto">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 Aalam Perfumes. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/category.js"></script>
+</body>
+</html>
