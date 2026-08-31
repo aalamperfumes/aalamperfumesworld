@@ -19,12 +19,12 @@
             <button class="btn btn-outline-light me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
                 <i class="fas fa-bars"></i>
             </button>
-            <a class="navbar-brand fw-bold tracking-wide" href="index.html">AALAM PERFUMES</a>
+            <a class="navbar-brand fw-bold tracking-wide" href="index.html">Aaalam Perfumes</a>
             
             <div class="ms-auto d-flex align-items-center">
                 <a href="cart.html" class="btn btn-outline-light position-relative me-3">
                     <i class="fas fa-shopping-cart"></i>
-                    <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         0
                     </span>
                 </a>
@@ -54,15 +54,16 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container text-center">
+    <section class="hero-section text-center py-5 bg-dark text-white">
+        <div class="container">
             <div>
-                <img src="logo-removebg-preview.png" alt="" height="100px" width="100px">
+                <img src="logo-removebg-preview.png" alt="Aalam Logo" height="100px" width="100px">
             </div>
+            <br>
             <h1 class="display-3 fw-bold mb-3 text-white">AALAM PERFUMES WORLD</h1>
             <p class="lead mb-4 text-white">2026 - 2027 Collections</p>
             <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#categories" class="btn btn-gold rounded-pill px-4 fw-bold">Explore Collection</a>
+                <a href="#products-section" class="btn btn-gold rounded-pill px-4 fw-bold">Explore Collection</a>
                 <a href="#about" class="btn btn-outline-light rounded-pill px-4">Our Story</a>
             </div>
         </div>
@@ -101,6 +102,19 @@
         </div>
     </section>
 
+    <!-- Products Display Section (main.js ലെ productGrid ഇവിടേക്ക് ഡാറ്റ ലോഡ് ചെയ്യും) 
+    <section id="products-section" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2 id="pageTitle" class="fw-bold section-title">ALL PRODUCTS</h2>
+                <div class="title-divider"></div>
+            </div>
+            <div id="productGrid" class="row">-->
+                <!-- Products dynamically rendered by main.js -->
+            </div>
+        </div>
+    </section>
+
     <!-- Attar or Spray Popup Modal -->
     <div class="modal fade" id="typeModal" tabindex="-1" aria-labelledby="typeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -119,7 +133,7 @@
         </div>
     </div>
 
-      <!-- Closing Brand Conclusion Section -->
+    <!-- Closing Brand Conclusion Section -->
     <section class="brand-conclusion-section py-5 text-center">
         <div class="container">
             <div class="conclusion-card">
@@ -137,17 +151,13 @@
                 <div class="col-md-6 mb-4 mb-md-0">
                     <h2 style="text-align: center; font-size: 36px;">Aalam Perfumes</h2>
                     <p style="text-align: center; color: rgb(175, 192, 192);">Aalam Perfumes crafts luxury fragrances designed to make a lasting impression. Blending traditional Middle Eastern warmth with modern perfumery, each bottle delivers a rich, long-lasting sensory experience.</p>
-                    <br>
-                    <!--<p class="text-muted">Aalam Perfumes World, we believe that a fragrance is more than just a scent, it is an identity, a memory, and a reflection of your personality. Every fragrance has the power to express who you are, create a lasting impression, and turn ordinary moments into unforgettable experiences.</p>
-                </div>-->
+                </div>
                 <div class="col-md-6">
                     <img src="AM.jpeg" class="img-fluid rounded shadow" alt="About Us">
                 </div>
-                
             </div>
         </div>
     </section>
-
 
     <!-- Testimonials Section -->
     <section class="testimonials-section py-5">
@@ -227,69 +237,50 @@
 
     <!-- Fragrance Finder -->
     <section class="fragrance-finder py-5">
-        <div class="container">
+        <div class="container text-center">
+            <h3 class="mb-4">Consult Our Expert</h3>
+            <div class="social-icons-wrapper mb-3">
+                <a href="https://wa.me/918281914965?text=Hi%20Aalam,%20help%20me%20choose%20a%20perfume" class="social-btn whatsapp" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://instagram.com/aalam_perfumes" class="social-btn instagram" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://facebook.com/aalam_perfumes" class="social-btn facebook" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="mailto:aalamperfumes@gmail.com" class="social-btn email" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            </div>
             <div>
-                <!--<p style="text-align: center;">Consult To Our Expert</p>-->
-                <div class="contact-section text-center">
-    <h3 class="mb-4">Consult Our Expert</h3>
-    <div class="social-icons-wrapper">
-        <!-- WhatsApp -->
-        <a href="https://wa.me/918281914965?text=Hi%20Aalam,%20help%20me%20choose%20a%20perfume" class="social-btn whatsapp" target="_blank" aria-label="WhatsApp">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-        <!-- Instagram -->
-        <a href="https://instagram.com/aalam_perfumes" class="social-btn instagram" target="_blank" aria-label="Instagram">
-            <i class="fab fa-instagram"></i>
-        </a>
-        <!-- Facebook -->
-        <a href="https://facebook.com/aalam_perfumes" class="social-btn facebook" target="_blank" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i>
-        </a>
-        <!-- Email -->
-        <a href="mailto:aalamperfumes@gmail.com" class="social-btn email" aria-label="Email">
-            <i class="fas fa-envelope"></i>
-        </a>
-    </div>
-</div>
-                <div class="text-center">
                 <a href="https://wa.me/918281914965?text=Hi%20Aalam,%20help%20me%20choose%20a%20perfume" class="btn-finder" target="_blank">
-    <i class="fab fa-whatsapp me-2"></i> WhatsApp
-</a>
-</div>
+                    <i class="fab fa-whatsapp me-2"></i> WhatsApp
+                </a>
             </div>
         </div>
     </section>
 
-
-   <!-- Footer -->
-<footer class="footer luxury-footer py-5 mt-5">
-    <div class="container text-center text-md-start">
-        <div class="row gy-4">
-            <div class="col-md-4 mb-3">
-                <h5 class="fw-bold footer-title">Aalam Perfumes</h5>
-                <p class="footer-desc">Your destination for luxury perfumes and custom scents.</p>
+    <!-- Footer -->
+    <footer class="footer luxury-footer py-5 mt-5">
+        <div class="container text-center text-md-start">
+            <div class="row gy-4">
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold footer-title">Aalam Perfumes</h5>
+                    <p class="footer-desc">Your destination for luxury perfumes and custom scents.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold footer-title">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold footer-title">Contact Us</h5>
+                    <p class="contact-item"><i class="fas fa-envelope me-2"></i>aalamperfumes@gmail.com</p>
+                    <p class="contact-item"><i class="fas fa-phone me-2"></i>+91 8281914965</p>
+                </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <h5 class="fw-bold footer-title">Quick Links</h5>
-                <ul class="list-unstyled footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#categories">Categories</a></li>
-                    <li><a href="#about">About Us</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 mb-3">
-                <h5 class="fw-bold footer-title">Contact Us</h5>
-                <p class="contact-item"><i class="fas fa-envelope me-2"></i>aalamperfumes@gmail.com</p>
-                <p class="contact-item"><i class="fas fa-phone me-2"></i>+91 8281914965</p>
-                
+            <hr class="footer-divider my-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap pt-2">
+                <p class="mb-0 footer-copy">&copy; 2026 Aalam Perfumes World. All rights reserved.</p>
             </div>
         </div>
-        <hr class="footer-divider my-4">
-        <div class="d-flex justify-content-between align-items-center flex-wrap pt-2">
-            <p class="mb-0 footer-copy">&copy; 2026 Aalam Perfumes World. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -312,5 +303,8 @@
             });
         }
     </script>
+
+    <!-- Main JS Link (ഇതാണ് ഡാറ്റാബേസിൽ നിന്ന് പ്രൊഡക്റ്റുകൾ കാണിക്കുന്നത്) -->
+    <script src="js/main.js"></script>
 </body>
 </html>
