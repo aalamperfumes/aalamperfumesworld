@@ -34,7 +34,7 @@ function loadCartItems() {
         container.innerHTML += `
             <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
                 <div class="d-flex align-items-center gap-3">
-                    <img src="${item.image}" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                    <img src="${item.image}" class="rounded" style="width: 60px; height: 60px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/60'">
                     <div>
                         <h6 class="fw-bold mb-1">${item.title}</h6>
                         <small class="text-muted">₹${item.price} x ${item.qty}</small>
@@ -66,7 +66,8 @@ function updateCartBadge() {
     if (badge) badge.innerText = totalCount;
 }
 
-function checkoutWhatsApp() {
+// ================= DATABASE-ലേക്ക് ORDER SAVE ചെയ്ത് WHATSAPP-ലേക്ക് അയ്ക്കുന്ന ഫങ്ഷൻ =================
+async function checkoutWhatsApp() {
     let cart = JSON.parse(localStorage.getItem('aalam_cart')) || [];
     if (cart.length === 0) {
         alert('Your cart is empty!');
@@ -79,6 +80,9 @@ function checkoutWhatsApp() {
     let address = document.getElementById('customerAddress').value;
     let pincode = document.getElementById('customerPincode').value;
 
+    let totalAmount = 0;
+
+    // WhatsApp സന്ദേശം ഉണ്ടാക്കുന്നു
     let message = `*New Order - Aalam Perfumes*%0A%0A`;
     message += `*Customer Details:*%0A`;
     message += `Name: ${name}%0A`;
@@ -87,27 +91,37 @@ function checkoutWhatsApp() {
     message += `Address: ${address} - ${pincode}%0A%0A`;
     message += `*Order Items:*%0A`;
 
-    let total = 0;
-    cart.forEach(item => {
-        message += `- ${item.title} (${item.qty} pcs) : ₹${item.price * item.qty}%0A`;
-        total += item.price * item.qty;
+    cart.forEach((item, index) => {
+        let itemTotal = item.price * item.qty;
+        totalAmount += itemTotal;
+        message += `${index + 1}. ${item.title} (${item.qty} pcs) : ₹${itemTotal}%0A`;
+        if (item.image) {
+            message += `   Image: ${encodeURIComponent(item.image)}%0A`;
+        }
     });
 
-    message += `%0A*Total Amount: ₹${total}*`;
+    message += `%0A*Total Amount: ₹${totalAmount}*`;
 
-    // WhatsApp നമ്പർ (നിങ്ങളുടെ ഷോപ്പ് വാട്സാപ്പ് നമ്പർ ഇവിടെ നൽകുക)
+    // 1. ഓർഡർ വിവരങ്ങൾ Server (MongoDB) വഴി ഡാറ്റാബേസിലേക്ക് സേവ് ചെയ്യുന്നു
+    try {
+        await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                customerInfo: { name, phone, city, address, pincode },
+                items: cart,
+                totalAmount: totalAmount
+            })
+        });
+    } catch (error) {
+        console.error('Error saving order to database:', error);
+    }
+
+    // 2. WhatsApp ചാറ്റിലേക്ക് റീഡയറക്ട് ചെയ്യുന്നു
     let whatsappNumber = "918281914965"; 
     let whatsappURL = `https://wa.me/${whatsappNumber}?text=${message}`;
 
-    // ഓർഡർ ലോക്കൽ സ്റ്റോറേജിൽ സേവ് ചെയ്യാം (Admin പാനലിൽ കാണാൻ)
-    let orders = JSON.parse(localStorage.getItem('aalam_orders')) || [];
-    orders.push({
-        id: 'ALM-' + Math.floor(100000 + Math.random() * 900000),
-        name, phone, address: `${city}, ${address} - ${pincode}`, items: cart, total, date: new Date().toLocaleString()
-    });
-    localStorage.setItem('aalam_orders', JSON.stringify(orders));
-
-    // കാർട്ട് ക്ലിയർ ചെയ്ത് WhatsApp-ലേക്ക് റീഡയറക്ട് ചെയ്യുക
+    // കാർട്ട് ക്ലിയർ ചെയ്ത് WhatsApp തുറക്കുന്നു
     localStorage.removeItem('aalam_cart');
     window.open(whatsappURL, '_blank');
     window.location.href = 'index.html';
