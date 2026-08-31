@@ -1,8 +1,7 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
-const Razorpay = require('razorpay');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
@@ -13,61 +12,67 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// File Paths
-const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
-const ORDERS_FILE = path.join(__dirname, 'data', 'orders.json');
+// ================= MONGODB DATABASE CONNECTION =================
+const MONGO_URI = process.env.MONGO_URI || 'YOUR_MONGODB_ATLAS_CONNECTION_STRING';
 
-// Helper Functions to Read/Write JSON Data
-const readData = (filePath) => {
-    if (!fs.existsSync(filePath)) return [];
-    try {
-        const data = fs.readFileSync(filePath, 'utf8');
-        return JSON.parse(data || '[]');
-    } catch (err) {
-        return [];
-    }
-};
+mongoose.connect(MONGO_URI)
+    .then(() => console.log('✅ Connected to MongoDB Atlas Successfully!'))
+    .catch(err => console.error('❌ MongoDB Connection Error:', err));
 
-const writeData = (filePath, data) => {
-    const dir = path.dirname(filePath);
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-};
+// Database Schemas & Models
+const ProductSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    category: { type: String, default: 'General' },
+    sub: { type: String, default: '' },
+    price: { type: Number, required: true },
+    sizes: { type: Array, default: [] },
+    image: { type: String, required: true },
+    description: { type: String, default: '' }
+}, { timestamps: true });
 
-// Razorpay Instance Setup
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || 'YOUR_RAZORPAY_KEY_ID';
-const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || 'YOUR_RAZORPAY_KEY_SECRET';
+const OrderSchema = new mongoose.Schema({
+    id: { type: String, required: true },
+    customerName: { type: String, default: 'Guest' },
+    phone: { type: String, default: '' },
+    address: { type: String, default: '' },
+    items: { type: Array, default: [] },
+    totalAmount: { type: Number, required: true },
+    status: { type: String, default: 'WhatsApp Pending' }
+}, { timestamps: true });
 
-const razorpay = new Razorpay({
-    key_id: RAZORPAY_KEY_ID,
-    key_secret: RAZORPAY_KEY_SECRET
-});
+const Product = mongoose.model('Product', ProductSchema);
+const Order = mongoose.model('Order', OrderSchema);
 
 // ================= PRODUCT APIS =================
 
 // Get All Products
-app.get('/api/products', (req, res) => {
-    const products = readData(PRODUCTS_FILE);
-    res.json(products);
+app.get('/api/products', async (req, res) => {
+    try {
+        const products = await Product.find().sort({ createdAt: -1 });
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch products' });
+    }
 });
 
-// Get Single Product by ID (കാർട്ടിലേക്ക് ആഡ് ചെയ്യാൻ ഇത് ആവശ്യമാണ്)
-app.get('/api/products/:id', (req, res) => {
-    const products = readData(PRODUCTS_FILE);
-    const product = products.find(p => p.id == req.params.id);
-    if (!product) {
-        return res.status(404).json({ error: 'Product not found' });
+// Get Single Product by ID
+app.get('/api/products/:id', async (req, res) => {
+    try {
+        const product = await Product.findOne({ id: req.params.id });
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch product' });
     }
-    res.json(product);
 });
 
 // Add New Product
-app.post('/api/products', (req, res) => {
+app.post('/api/products', async (req, res) => {
     try {
-        const products = readData(PRODUCTS_FILE);
-        const newProduct = {
+        const newProduct = new Product({
             id: 'prod_' + Date.now(),
             name: req.body.name,
             category: req.body.category || 'General',
@@ -76,10 +81,9 @@ app.post('/api/products', (req, res) => {
             sizes: req.body.sizes || [],
             image: req.body.image,
             description: req.body.description || ''
-        };
-        
-        products.push(newProduct);
-        writeData(PRODUCTS_FILE, products);
+        });
+
+        await newProduct.save();
         res.status(201).json({ message: 'Product added successfully', product: newProduct });
     } catch (error) {
         console.error('Error saving product:', error);
@@ -88,82 +92,57 @@ app.post('/api/products', (req, res) => {
 });
 
 // Delete Product
-app.delete('/api/products/:id', (req, res) => {
+app.delete('/api/products/:id', async (req, res) => {
     try {
-        let products = readData(PRODUCTS_FILE);
-        products = products.filter(p => p.id != req.params.id);
-        writeData(PRODUCTS_FILE, products);
+        await Product.deleteOne({ id: req.params.id });
         res.json({ message: 'Product deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete product' });
     }
 });
 
-// ================= ORDER APIS =================
+// ================= ORDER APIS (WHATSAPP ORDER SAVING) =================
 
-// Get All Orders
-app.get('/api/orders', (req, res) => {
-    const orders = readData(ORDERS_FILE);
-    res.json(orders);
+// Get All Orders (Admin കാണാൻ)
+app.get('/api/orders', async (req, res) => {
+    try {
+        const orders = await Order.find().sort({ createdAt: -1 });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch orders' });
+    }
 });
 
-// Create Order (Razorpay Payment Integration)
-app.post('/api/create-order', async (req, res) => {
+// Create Order (WhatsApp ഓർഡർ ഡാറ്റാബേസിൽ സേവ് ചെയ്യാൻ)
+app.post('/api/orders', async (req, res) => {
     try {
-        const { amount, customerInfo, items } = req.body;
+        const { customerInfo, items, totalAmount } = req.body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return res.status(400).json({ success: false, message: 'Cart is empty' });
         }
 
-        const orderAmount = Number(amount) || 0;
-        if (orderAmount <= 0) {
-            return res.status(400).json({ success: false, message: 'Invalid order amount' });
-        }
-
-        const options = {
-            amount: Math.round(orderAmount * 100), // Amount in paise
-            currency: 'INR',
-            receipt: 'rcpt_' + Date.now()
-        };
-
-        const razorpayOrder = await razorpay.orders.create(options);
-
-        // Save order details to orders.json
-        const orders = readData(ORDERS_FILE);
-        const newOrder = {
-            id: razorpayOrder.id,
+        const newOrder = new Order({
+            id: 'ALM-' + Math.floor(100000 + Math.random() * 900000),
             customerName: customerInfo?.name || 'Guest',
             phone: customerInfo?.phone || '',
-            address: customerInfo?.address || '',
+            address: `${customerInfo?.city || ''}, ${customerInfo?.address || ''} - ${customerInfo?.pincode || ''}`,
             items: items || [],
-            totalAmount: orderAmount,
-            status: 'Pending',
-            createdAt: new Date().toLocaleString()
-        };
-
-        orders.push(newOrder);
-        writeData(ORDERS_FILE, orders);
-
-        return res.status(200).json({
-            success: true,
-            orderId: razorpayOrder.id,
-            razorpayKey: RAZORPAY_KEY_ID,
-            amount: options.amount,
-            currency: 'INR'
+            totalAmount: Number(totalAmount) || 0,
+            status: 'WhatsApp Order'
         });
+
+        await newOrder.save();
+        res.status(201).json({ success: true, message: 'Order saved successfully', orderId: newOrder.id });
 
     } catch (error) {
-        console.error('Razorpay Error:', error);
-        return res.status(500).json({ 
-            success: false, 
-            message: error.description || error.message || 'Failed to create Razorpay order' 
-        });
+        console.error('Order Saving Error:', error);
+        res.status(500).json({ success: false, message: 'Failed to save order' });
     }
 });
 
 // Catch-all route for SPA
-app.get('/{*splat}', (req, res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
