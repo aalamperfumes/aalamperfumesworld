@@ -8,12 +8,12 @@ const app = express();
 
 // Middlewares
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ================= MONGODB DATABASE CONNECTION =================
-const MONGO_URI = process.env.MONGO_URI || 'YOUR_MONGODB_ATLAS_CONNECTION_STRING';
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log('✅ Connected to MongoDB Atlas Successfully!'))
@@ -21,7 +21,7 @@ mongoose.connect(MONGO_URI)
 
 // Database Schemas & Models
 const ProductSchema = new mongoose.Schema({
-    id: { type: String, required: true, unique: true },
+    id: { type: String, required: true },
     name: { type: String, required: true },
     category: { type: String, default: 'General' },
     sub: { type: String, default: '' },
@@ -72,15 +72,21 @@ app.get('/api/products/:id', async (req, res) => {
 // Add New Product
 app.post('/api/products', async (req, res) => {
     try {
+        const { name, category, sub, price, sizes, image, description } = req.body;
+
+        if (!name || !price || !image) {
+            return res.status(400).json({ error: 'Name, price, and image are required fields.' });
+        }
+
         const newProduct = new Product({
-            id: 'prod_' + Date.now(),
-            name: req.body.name,
-            category: req.body.category || 'General',
-            sub: req.body.sub || '',
-            price: Number(req.body.price),
-            sizes: req.body.sizes || [],
-            image: req.body.image,
-            description: req.body.description || ''
+            id: 'prod_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+            name,
+            category: category || 'General',
+            sub: sub || '',
+            price: Number(price),
+            sizes: sizes || [],
+            image,
+            description: description || ''
         });
 
         await newProduct.save();
@@ -101,9 +107,8 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 });
 
-// ================= ORDER APIS (WHATSAPP ORDER SAVING) =================
+// ================= ORDER APIS =================
 
-// Get All Orders (Admin കാണാൻ)
 app.get('/api/orders', async (req, res) => {
     try {
         const orders = await Order.find().sort({ createdAt: -1 });
@@ -113,7 +118,6 @@ app.get('/api/orders', async (req, res) => {
     }
 });
 
-// Create Order (WhatsApp ഓർഡർ ഡാറ്റാബേസിൽ സേവ് ചെയ്യാൻ)
 app.post('/api/orders', async (req, res) => {
     try {
         const { customerInfo, items, totalAmount } = req.body;
@@ -141,7 +145,7 @@ app.post('/api/orders', async (req, res) => {
     }
 });
 
-// Catch-all route for SPA
+// Catch-all route for SPA (വഴിയുള്ള എല്ലാ ഫ്രണ്ട്-എൻഡ് റൂട്ടുകൾക്കും)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -149,5 +153,5 @@ app.get('*', (req, res) => {
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
